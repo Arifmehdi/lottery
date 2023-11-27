@@ -1,0 +1,195 @@
+body{
+    font-family: Calibri;
+    text-align: center;
+    background-color: #f66e92;
+}
+
+.container{
+    width: 1000px;
+    margin: auto;
+}
+
+.section{
+    width: 100%;
+    height: 150px;
+    display: flex;
+}
+
+.section1{
+    width: 70%;
+    color: white;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+}
+
+.section1 h4:first-child{
+    margin-bottom: -10px;
+}
+
+.section1 div a{
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: Red;
+    padding: 10px 10px;
+    border-radius: 10px 10px 0px 0px;
+    border: none;
+    text-decoration: none;
+}
+
+.section2{
+    width: 30%;
+    color: white;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.section2 h4:last-child{
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.section2 div a{
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    background-color: green;
+    padding: 7px 30px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+}
+
+.table{
+    width: 100%;
+    border: 1px solid black;
+    background-color: #F6EEAF;
+}
+
+.table thead tr th{
+    background-color: #d9cf94;
+}
+
+.table tbody tr td{
+    background-color: #F6EEAF;
+    color: black;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.table thead tr th, .table tbody tr td{
+    border: 1px solid black;
+    height: 40px;
+    
+}
+
+.yantra-input{
+    background-color: white;
+    color: black;
+    font-weight: 700;
+    font-size: 16px;
+    border: 1px solid black;
+    height: 20px;
+    width: 30px;
+    padding: 5px;
+}
+
+.total{
+    text-align: right;
+    padding-right: 20px;
+}
+
+.button{
+    width: 100%;
+    height: 50px;
+    padding-top: 10px;
+}
+
+.button a{
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    background-color: red;
+    margin: 18px;
+    padding: 7px 20px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+}
+.glossy{
+    background-image: linear-gradient(hsla(0, 0%, 100%, 0.4), hsla(0, 0%, 100%, 0) 50%,hsla(0, 0%, 0%, 0.1) 50%, hsla(0, 0%, 100%, 0));
+}
+
+
+.button button{
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    background-color: red;
+    margin: 18px;
+    padding: 7px 20px;
+    border-radius: 5px;
+    border: none;
+    background-image: linear-gradient(hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0) 50%,hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 100%, 0) !important
+}
+
+.footer{
+    padding-top: 40px;
+}
+
+.footer h3{
+    color: white;
+    margin-bottom: -10px;
+}
+
+body {
+  padding: 40px;
+}
+
+.glossy-button {
+  background-color: #AAA;
+  background-image: linear-gradient( /* chrome */
+    hsla(0, 0%, 100%, 0.6), hsla(0, 0%, 100%, 0) 50%,
+    hsla(0, 0%, 0%, 0.3) 50%, hsla(0, 0%, 100%, 0.2)
+  );
+  color: white;
+  padding: 7px 20px;
+  text-shadow:
+    0 0 15px hsla(0, 0%, 100%, 1), /* bloom */
+    0 2px 4px hsla(0, 0%, 0%, 0.7); /* drop shadow */
+  border: none;
+  border-radius: 50px;
+  margin: 10px;
+  box-shadow:
+    inset 0 -5px 20px hsla(0, 0%, 0%, 0.4), /* top light */
+    inset 0 5px 20px hsla(0, 0%, 100%, 0.4), /* bottom shadow */
+    /* multiple light sources yall */
+    -8px 8px 5px hsla(0, 0%, 0%, 0.15), /* drop shadow 1 */
+    5px 18px 10px hsla(0, 0%, 0%, 0.2); /* drop shadow 2 */
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* highlight */
+.glossy-button:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 5px;
+  height: 30px;
+  border-radius: 15px;
+  background: linear-gradient(
+    hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0) );
+}
+

@@ -1,0 +1,47 @@
+body{
+    font-family: Calibri;
+    text-align: center;
+    background-color: #f66e92;
+}
+
+.container{
+    width: 1000px;
+    padding: 0 0 50px 0;
+    margin: auto;
+}
+
+.title{
+    color: white;
+    font-size: 40px;
+}
+
+.subtitle{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.subtitle span{
+    color: yellow;
+    margin: 0px 10px;
+}
+
+.table{
+    width: 100%;
+
+}
+
+.table tr td, .table tr th{
+    border: 2px solid black;
+    font-size: 24px;
+    font-weight: bold;
+    width: 10%;
+}
+
+.footer{
+    padding-top: 40px;
+}
+
+.footer h3{
+    color: white;
+    margin-bottom: -10px;
+}
