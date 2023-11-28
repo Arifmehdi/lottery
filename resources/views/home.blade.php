@@ -32,9 +32,9 @@
                     <a href="NavRatnaCouPon/result.php" style="background-color:#020d6a">Result</a>
                     <a href="report.php">Report</a>
                     @else
-                    <a href="playroom.php" style="background-color:#020d6a">Bulk Coupons [ A ]</a>
-                    <a href="playroom.php" style="background-color:#020d6a">Bulk Coupons [ B ]</a>
-                    <a href="playroom.php" style="background-color:#020d6a">Jodi Coupons [ AB ]</a>
+                    <a href="{{route('home')}}" style="background-color:#020d6a">Bulk Coupons [ A ]</a>
+                    <a href="{{route('home')}}" style="background-color:#020d6a">Bulk Coupons [ B ]</a>
+                    <a href="{{route('home')}}" style="background-color:#020d6a">Jodi Coupons [ AB ]</a>
                     <a href="UserRoom/Deposit.php" style="background-color:#020d6a">Deposit Room</a>
                     <a href="UserRoom/WithDraw.php" style="background-color:#020d6a">WithDraw Room</a>
                     @endif
@@ -178,7 +178,7 @@
             <button type="submit" class="glossy" name="cancel_ticket" style="background-color:#B80007">CANCEL</button>
             <a href="report.php" class="glossy" style="background-color:#B80007">HISTORY</a>
             <a href="BuyTicket.php" class="glossy" style="background-color:#B80007">REPORT</a>
-            <a href="Results.php" class="glossy" style="background-color:#B80007">RESULT</a>
+            <a href="{{route('result')}}" class="glossy" style="background-color:#B80007">RESULT</a>
 
         </div>
         <br>

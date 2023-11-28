@@ -90,3 +90,5 @@ Route::get('/cron-playroom',[CronController::class,'index'])->name('cron.playroo
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/result',[HomeController::class,'result'])->name('result');
+Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');

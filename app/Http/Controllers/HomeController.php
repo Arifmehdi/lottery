@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['result']]);
     }
 
     /**
@@ -81,5 +81,34 @@ class HomeController extends Controller
                 // dd($formatted_timelast);
 
         return view('home',compact('row1','timeToDisplay'));
+    }
+
+    public function result(Request $request)
+    {
+
+        // include_once 'includes/connection.php';
+
+
+        // if (isset($_GET['date'])) {
+        //     $date = $_GET['date'];
+        //     $date = date("d-m-Y", strtotime($date));
+        // } else {
+        //     $date = date('d-m-Y');
+        // }
+        //marif start
+
+        // $select = "SELECT * FROM yantra WHERE date = '$date' and status='1'" ;
+        // $query = mysqli_query($conn, $select);
+
+
+        $date = date('d-m-Y');
+        $yantra_datas= Yantra::where('date',$date)->where('status',1)->get();
+// dd($yantra_datas);
+        return view('result', compact('yantra_datas'));
+    }
+
+    public function deposite()
+    {
+        return view('Userroom.deposite');
     }
 }

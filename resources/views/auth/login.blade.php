@@ -179,7 +179,7 @@ for ($i = 0; $i < $length; $i++) {
                     </div>
                     <div class="form-group">
                         <input type="submit" name="login" class="form-control btn btn-success" value="LOGIN">
-                        <a href="Results.php" class="form-control btn btn-warning mt-3" <button class="w3-button w3-black">RESULTS CHART</b></a>
+                        <a href="{{route('result')}}" class="form-control btn btn-warning mt-3" <button class="w3-button w3-black">RESULTS CHART</b></a>
                     </div>
                 </form>
         </div>
