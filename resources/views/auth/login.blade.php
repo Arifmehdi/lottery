@@ -84,11 +84,12 @@ for ($i = 0; $i < $length; $i++) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en-US"
-	prefix="og: https://ogp.me/ns#" >
+<html lang="en-US" prefix="og: https://ogp.me/ns#" >
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <head>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9VH7L909J"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -150,7 +151,7 @@ for ($i = 0; $i < $length; $i++) {
                 </h4>
             </div>
             <div class="panel-body">
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('login') }}" id="loginForm">
                     @csrf
                     <div class="form-group">
                         {{-- <input type="text" class="form-control" placeholder="User ID" name="username" required> --}}
@@ -170,15 +171,19 @@ for ($i = 0; $i < $length; $i++) {
                         </span>
                     @enderror
                     </div>
-                    <div class="form-group d-flex captcha-bg">
-                        <input type="text" class="form-control captcha" name="captcha" style="width:100px;height:45px" value="<?php echo $random_text; ?>" readonly>
+                    {{--<div class="form-group d-flex captcha-bg">
+                        <input type="text" class="form-control captcha" name="captcha" style="width:100px;height:45px" value="<?php //echo $random_text; ?>" readonly>
                         <a href="#" onclick="location.reload();" style="padding: 0rem 1rem;line-height:2rem;margin-top:4px;height:38px;margin-left:5px" class="btn btn-sm btn-success captcha-btn">Change</a>
+                    </div>--}}
+                    <div class="form-group d-flex captcha-bg">
+                        <input type="text" class="form-control captcha" name="captcha" style="width:100px;height:45px" id="capcha_input" value="<?php echo $random_text; ?>" readonly>
+                        <a href="#"  style="padding: 0rem 1rem;line-height:2rem;margin-top:4px;height:38px;margin-left:5px" class="btn btn-sm btn-success captcha-btn" id="captcha-btn">Change</a>
                     </div>
                     <div class="form-group">
                         <input type="text" placeholder="Enter The Above Captcha" name="recaptcha" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <input type="submit" name="login" class="form-control btn btn-success" value="LOGIN">
+                        <input type="submit" name="login" class="form-control btn btn-success" value="LOGIN" id="login">
                         <a href="{{route('result')}}" class="form-control btn btn-warning mt-3" <button class="w3-button w3-black">RESULTS CHART</b></a>
                     </div>
                 </form>
@@ -189,4 +194,43 @@ for ($i = 0; $i < $length; $i++) {
 
 
 </body>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).ready(function(){
+        function ajaxCapcaha(){
+            $.ajax({
+                url :"{{ route('ajax.captcha') }}",
+                type: 'POST',
+                success:function(res){
+                    $('#capcha_input').val(res)
+                    console.log(res);
+                },
+                error: function(error){
+
+                }
+            });
+        }
+
+        $('#captcha-btn').click(function(){
+            ajaxCapcaha();
+            // alert('usdhhahh');
+        });
+
+        $('#login').click(function (e) {
+            var captchaInputValue = $('#capcha_input').val();
+            var recaptchaInputValue = $('input[name="recaptcha"]').val();
+            if (captchaInputValue != recaptchaInputValue) {
+                    e.preventDefault();
+                    ajaxCapcaha();
+                    alert('Captcha values do not match! Please try again.');
+                    $('#captcha_input').val('');
+            }
+        });
+    });
+</script>
 </html>

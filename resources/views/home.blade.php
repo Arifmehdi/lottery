@@ -18,7 +18,7 @@
         <div class="section">
             <div class="section1">
                 <h4 class="section1-a" style="color:black">
-                    Welcome,{{ Auth::user()->username }}
+                    Welcome, {{ Auth::user()->phone }}
                 </h4>
                 <h4 class="section1-b" style="color:black">
                     Balance Points: {{ Auth::user()->balance }}

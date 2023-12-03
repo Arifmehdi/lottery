@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Yantra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -14,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['result']]);
+        $this->middleware('auth', ['except' => ['result','ajaxCaptcha']]);
     }
 
     /**
@@ -110,5 +111,23 @@ class HomeController extends Controller
     public function deposite()
     {
         return view('Userroom.deposite');
+    }
+
+    public function ajaxCaptcha(Request $request)
+    {
+        // $chars = 'NAVRATNACOUPON0123456789';
+        // $length = 5;
+        // $random_text = '';
+        // for ($i = 0; $i < $length; $i++) {
+        //     $random_text .= $chars[rand(0, strlen($chars) - 1)];
+        // }
+
+        $length = 5;
+        $length = max(2, $length);
+        $reservedLetter = Str::random(1, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomString = $reservedLetter . Str::random($length - 1, str_shuffle($characters));
+
+        return strtoupper($randomString);
     }
 }

@@ -89,6 +89,10 @@ Route::get('/cron-playroom',[CronController::class,'index'])->name('cron.playroo
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/result',[HomeController::class,'result'])->name('result');
-Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');
+
+Route::middleware(['auth', 'role:0'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/result',[HomeController::class,'result'])->name('result');
+    Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');
+    Route::post('/ajax-captcha',[HomeController::class,'ajaxCaptcha'])->name('ajax.captcha');
+});
