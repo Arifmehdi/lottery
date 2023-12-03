@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Yantra;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -129,5 +130,11 @@ class HomeController extends Controller
         $randomString = $reservedLetter . Str::random($length - 1, str_shuffle($characters));
 
         return strtoupper($randomString);
+    }
+
+    public function user()
+    {
+        $users = User::get();
+        return view('admin.user', compact('users'));
     }
 }

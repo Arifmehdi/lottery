@@ -83,16 +83,20 @@ Route::get('/playroom', function () {
 });
 Route::get('/cron-playroom',[CronController::class,'index'])->name('cron.playroom');
 
-
-// NV`, `RR`, `RY`, `CH`, `date`, `time`, `status
-//user_id`, `product_group`, `t0`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `qty`, `points`, `date`, `time
-
 Auth::routes();
 
+// Route::middleware(['auth', 'role:1'])->group(function () {
+//     // dd('kasjdasjd');
+//     Route::get('/admin/home', [HomeController::class, 'index'])->name('admin.home');
+// });
 
-Route::middleware(['auth', 'role:0'])->group(function () {
+// Route::middleware(['auth', 'role:0'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/result',[HomeController::class,'result'])->name('result');
     Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');
     Route::post('/ajax-captcha',[HomeController::class,'ajaxCaptcha'])->name('ajax.captcha');
-});
+    // });
+    Route::get('/user-list',[HomeController::class,'user'])->name('user.list');
+
+
+
