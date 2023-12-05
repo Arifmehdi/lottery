@@ -8,31 +8,31 @@ if (isset($_GET['date'])) {
     $date = date('d-m-Y');
 }
 
-if ($title == 'Deposit History' || $title == 'Withdraw History') {
+//if ($title == 'Deposit History' || $title == 'Withdraw History') {
 
 ?>
-    <form action="" class="datepicker">
+    {{-- <form action="" class="datepicker">
         <input type="date" name="date">
         <button>Search</button>
-    </form>
-<?php } ?>
+    </form> --}}
+<?php //} ?>
 <div class="section">
     <div>
-        <a href="../playroom.php">Playroom</a>
+        <a href="{{route('home')}}">Playroom</a>
 
         <?php if ($title == 'Deposit' || $title == 'Deposit History') {?>
-        <a href="Deposit.php" class="<?php if ($title == 'Deposit') { echo 'active'; } ?>">Deposit</a>
+        <a href="{{route('user.deposit')}}" class="<?php if ($title == 'Deposit') { echo 'active'; } ?>">Deposit</a>
 
-        <a href="Deposit-History.php" class="<?php if ($title == 'Deposit History') { echo 'active'; } ?>">Deposit History</a><?php } ?>
+        <a href="{{ route('user.deposit.history') }}" class="<?php if ($title == 'Deposit History') { echo 'active'; } ?>">Deposit History</a><?php } ?>
 
         <?php if ($title == 'Withdraw' || $title == 'Withdraw History') {?>
         <a href="WithDraw.php" class="<?php if ($title == 'Withdraw') { echo 'active'; } ?>">Withdraw</a>
 
         <a href="WithDraw-History.php" class="<?php if ($title == 'Withdraw History') { echo 'active'; } ?>">Withdraw History</a><?php } ?>
     </div>
-    <div>
+    {{--<div>
         <a href="../logout.php">Logout</a>
-    </div>
+    </div>--}}
 </div>
 
 <?php

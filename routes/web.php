@@ -133,6 +133,9 @@ Auth::routes();
     Route::post('/ajax-captcha',[HomeController::class,'ajaxCaptcha'])->name('ajax.captcha');
     Route::get('/function',[HomeController::class,'functional'])->name('functional');
     Route::get('/report',[HomeController::class,'report'])->name('report');
+    Route::get('/user/deposit',[HomeController::class,'userDeposit'])->name('user.deposit');
+    Route::post('/user/create/deposit',[HomeController::class,'createDeposit'])->name('user.create.deposit');
+    Route::get('/user/deposit-history',[HomeController::class,'userDepositHistory'])->name('user.deposit.history');
 
     Route::get('/admin/user',[HomeController::class,'user'])->name('user.list');
     Route::get('/admin/deposit',[HomeController::class,'adminDeposit'])->name('admin.deposit');

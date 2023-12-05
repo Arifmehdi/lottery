@@ -598,4 +598,89 @@ class HomeController extends Controller
 
         return view('report');
     }
+
+    public function userDeposit(Request $request)
+    {
+        return view('UserRoom.deposite');
+    }
+
+    public function userDepositHistory(Request $request)
+    {
+        // $select = "SELECT * FROM deposit WHERE user_id = '$user_id' && date = '$date' ORDER BY id DESC";
+        // $query = mysqli_query($conn, $select);
+        $deposits = Deposit::where('user_id',Auth::id())->get();
+        return view('UserRoom.deposite_history', compact('deposits'));
+    }
+
+    public function createDeposit(Request $request)
+    {
+        $id = $request->user_id;
+        $amount =  $request->amount;
+        $payment_id = $request->payment_id;
+        $payment_method =$request->payment_method;
+        $date = date('d-m-Y');
+
+        if ($amount >= 100) {
+
+            // $insert = "INSERT INTO deposit (user_id, amount, payment_id, payment_method, date) VALUES ('$id', '$amount', '$payment_id', '$payment_method', '$date')";
+            // $query = mysqli_query($conn, $insert);
+
+            $deposit = new Deposit();
+            $deposit->user_id = $id;
+            $deposit->amount = $amount;
+            $deposit->payment_id = $payment_id;
+            $deposit->payment_method = $payment_method;
+            $deposit->date = $date;
+            $deposit->status =0;
+            $deposit->save();
+            if($deposit){
+
+                return response()->json(['action' => 'add', 'message' => 'Deposit successful!']);
+            }else{
+                return response()->json(['action' => 'fail', 'message' => 'Deposit Failed!']);
+            }
+// dd($deposit);
+            // if ($query) {
+            //     $_SESSION['success'] = 'Deposit successful!';
+            //     header('location:Deposit.php');
+            // } else {
+            //     $_SESSION['error'] = 'Deposit Failed!';
+            //     header('location:Deposit.php');
+            // }
+        } else {
+            return response()->json(['action' => 'greate', 'message' => 'Amount must be greater then 100!']);
+            // $_SESSION['error'] = 'Amount must be greater then 100!';
+            // header('location:Deposit.php');
+        }
+
+
+        dd($id, $amount,$payment_id,$payment_method,$date,$request->all());
+
+        if ($request->ajax()) {
+            if (isset($_REQUEST['deposit'])) {
+                $id = $_REQUEST['user_id'];
+                $amount = $_REQUEST['amount'];
+                $payment_id = $_REQUEST['payment_id'];
+                $payment_method = $_REQUEST['payment_method'];
+                $date = date('d-m-Y');
+
+                if ($amount >= 100) {
+
+                    $insert = "INSERT INTO deposit (user_id, amount, payment_id, payment_method, date) VALUES ('$id', '$amount', '$payment_id', '$payment_method', '$date')";
+                    $query = mysqli_query($conn, $insert);
+
+                    if ($query) {
+                        $_SESSION['success'] = 'Deposit successful!';
+                        header('location:Deposit.php');
+                    } else {
+                        $_SESSION['error'] = 'Deposit Failed!';
+                        header('location:Deposit.php');
+                    }
+                } else {
+                    $_SESSION['error'] = 'Amount must be greater then 100!';
+                    header('location:Deposit.php');
+                }
+            }
+        }
+    }
 }
