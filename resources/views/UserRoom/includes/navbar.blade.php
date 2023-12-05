@@ -26,9 +26,9 @@ if (isset($_GET['date'])) {
         <a href="{{ route('user.deposit.history') }}" class="<?php if ($title == 'Deposit History') { echo 'active'; } ?>">Deposit History</a><?php } ?>
 
         <?php if ($title == 'Withdraw' || $title == 'Withdraw History') {?>
-        <a href="WithDraw.php" class="<?php if ($title == 'Withdraw') { echo 'active'; } ?>">Withdraw</a>
+        <a href="{{ route('user.withdraw') }}" class="<?php if ($title == 'Withdraw') { echo 'active'; } ?>">Withdraw</a>
 
-        <a href="WithDraw-History.php" class="<?php if ($title == 'Withdraw History') { echo 'active'; } ?>">Withdraw History</a><?php } ?>
+        <a href="{{ route('user.withdraw.history') }}" class="<?php if ($title == 'Withdraw History') { echo 'active'; } ?>">Withdraw History</a><?php } ?>
     </div>
     {{--<div>
         <a href="../logout.php">Logout</a>

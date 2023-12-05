@@ -616,13 +616,13 @@ class HomeController extends Controller
         return view('UserRoom.withdraw');
     }
 
-    // public function userDepositHistory(Request $request)
-    // {
-    //     // $select = "SELECT * FROM deposit WHERE user_id = '$user_id' && date = '$date' ORDER BY id DESC";
-    //     // $query = mysqli_query($conn, $select);
-    //     $deposits = Deposit::where('user_id',Auth::id())->get();
-    //     return view('UserRoom.deposite_history', compact('deposits'));
-    // }
+    public function userWithdrawHistory(Request $request)
+    {
+        // $select = "SELECT * FROM deposit WHERE user_id = '$user_id' && date = '$date' ORDER BY id DESC";
+        // $query = mysqli_query($conn, $select);
+        $withdraws = Withdraw::where('user_id',Auth::id())->get();
+        return view('UserRoom.withdraw_history', compact('withdraws'));
+    }
 
     public function createDeposit(Request $request)
     {

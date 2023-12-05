@@ -24,11 +24,11 @@
         @foreach ($deposits as $key => $deposit)
         <tr>
             <td>{{ ++$key }}</td>
-            <td>{{ $user->username }}</td>
+            <td>{{ $deposit->user_info->username }}</td>
             <td>{{ $deposit->payment_method }}</td>
             <td>{{ $deposit->payment_id }}</td>
             <td>{{ $deposit->amount }}</td>
-            <td>{{ $user->balance }}</td>
+            <td>{{ $deposit->user_info->balance }}</td>
             <td>{{ $deposit->date }}</td>
             <td>
                 <div class="action-btn-div">

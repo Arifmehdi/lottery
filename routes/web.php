@@ -138,7 +138,7 @@ Auth::routes();
     Route::get('/user/deposit-history',[HomeController::class,'userDepositHistory'])->name('user.deposit.history');
     Route::get('/user/withdraw',[HomeController::class,'userWithdraw'])->name('user.withdraw');
     Route::post('/user/create/withdraw',[HomeController::class,'createWithdraw'])->name('user.create.withdraw');
-    // Route::get('/user/deposit-history',[HomeController::class,'userDepositHistory'])->name('user.deposit.history');
+    Route::get('/user/withdraw-history',[HomeController::class,'userWithdrawHistory'])->name('user.withdraw.history');
 
     Route::get('/admin/user',[HomeController::class,'user'])->name('user.list');
     Route::get('/admin/deposit',[HomeController::class,'adminDeposit'])->name('admin.deposit');

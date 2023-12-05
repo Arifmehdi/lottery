@@ -1,5 +1,5 @@
 @php
-$title = 'Deposit History';
+$title = 'Withdraw History';
 @endphp
 @include('UserRoom.includes.header')
 
@@ -10,15 +10,15 @@ $title = 'Deposit History';
         <tr>
             <th>No.</th>
             <th>Amount</th>
-            <th>Payment ID</th>
+            <th>Wallet</th>
             <th>Payment Method</th>
             <th>Date</th>
             <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        <?php
-        // $i = 0;
+        {{-- <?php
+        //$i = 0;
         // while ($row = mysqli_fetch_array($query)) {
         //     $i++;
         //     $status = $row['status'];
@@ -28,14 +28,23 @@ $title = 'Deposit History';
         //         $status = 'Incomplete';
         //     }
         ?>
-        @foreach ($deposits as $key => $deposit)
+        <tr>
+            <td><?php //echo $i; ?></td>
+            <td><?php //echo $row['amount']; ?></td>
+            <td><?php //echo $row['wallet']; ?></td>
+            <td><?php //echo $row['payment_method']; ?></td>
+            <td><?php //echo $row['date']; ?></td>
+            <td><?php //echo $status; ?></td>
+        </tr>
+        <?php //} ?> --}}
+        @foreach ($withdraws as $key => $withdraw)
         <tr>
             <td>{{ ++$key }}</td>
-            <td>{{ $deposit->amount }}</td>
-            <td>{{ $deposit->payment_id }}</td>
-            <td>{{ $deposit->payment_method }}</td>
-            <td>{{ $deposit->date }}</td>
-            <td>{{ ($deposit->status == 1) ? 'Completed' : 'Incomplete' }}</td>
+            <td>{{ $withdraw->amount }}</td>
+            <td>{{ $withdraw->wallet }}</td>
+            <td>{{ $withdraw->payment_method }}</td>
+            <td>{{ $withdraw->date }}</td>
+            <td>{{ ($withdraw->status == 1) ? 'Completed' : 'Incomplete' }}</td>
         </tr>
         @endforeach
         <?php //} ?>
