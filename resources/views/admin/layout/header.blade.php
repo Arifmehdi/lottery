@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php $title = 'User'; echo $title; ?></title>
+    <title>{{ isset($title) ? $title : 'Navaratna' }}</title>
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/admin.style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">

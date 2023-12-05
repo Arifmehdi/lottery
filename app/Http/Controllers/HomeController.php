@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Yantra;
+use App\Models\Deposit;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -171,5 +173,34 @@ class HomeController extends Controller
                 ->make(true);
         }
         return view('admin.user');
+    }
+
+    public function adminDeposit(Request $request)
+    {
+        // if (isset($_GET['date'])) {
+        //     $date = $_GET['date'];
+        //     $date = date('d-m-Y', strtotime($date));
+        // } else {
+        //     $date = date('d-m-Y');
+        // }
+        // // $select = "SELECT * FROM deposit WHERE date = '$date' && status = '0'";
+
+
+
+        $date = date('d-m-Y');
+
+        if ($request->ajax()) {
+            $date = $_GET['date'];
+        }
+        $deposits = Deposit::where('date',$date)->where('status',0)->get();
+
+        $user = User::where('id',Auth::id())->first();
+        // dd($deposits);
+        return view('admin.deposit', compact('user','deposits'));
+    }
+
+    public function adminWithdraw()
+    {
+        return 'ok';
     }
 }

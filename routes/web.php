@@ -6,6 +6,8 @@ use App\Models\OldUser;
 use App\Models\Playroom;
 use App\Models\OldYantra;
 use App\Models\OldPlayroom;
+use App\Models\OldDeposit;
+use App\Models\Deposit;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
@@ -81,6 +83,23 @@ Route::get('/playroom-table', function () {
     }
     return 'Done Playroom Table';
 });
+
+Route::get('/deposit-table', function () {
+    $data = OldDeposit::get();
+    foreach ($data as $d){
+        $newData = new Deposit();
+        $newData->user_id = $d->user_id;
+        $newData->amount = $d->amount;
+        $newData->payment_id = $d->payment_id;
+        $newData->payment_method = $d->payment_method;
+        $newData->date = $d->date;
+        $newData->status = $d->status;
+        $newData->save();
+    }
+    return 'Done Deposit Table';
+});
+
+
 Route::get('/cron-playroom',[CronController::class,'index'])->name('cron.playroom');
 
 Auth::routes();
@@ -91,12 +110,15 @@ Auth::routes();
 // });
 
 // Route::middleware(['auth', 'role:0'])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/playroom', [HomeController::class, 'index'])->name('home');
     Route::get('/result',[HomeController::class,'result'])->name('result');
     Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');
     Route::post('/ajax-captcha',[HomeController::class,'ajaxCaptcha'])->name('ajax.captcha');
-    // });
-    Route::get('/user-list',[HomeController::class,'user'])->name('user.list');
+    Route::get('/admin/user',[HomeController::class,'user'])->name('user.list');
+    Route::get('/admin/deposit',[HomeController::class,'adminDeposit'])->name('admin.deposit');
+    Route::get('/admin/withdraw',[HomeController::class,'adminWithdraw'])->name('admin.withdraw');
+
+// });
 
 
 

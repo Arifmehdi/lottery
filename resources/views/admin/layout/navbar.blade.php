@@ -26,9 +26,9 @@ if ($title == 'Deposit' || $title == 'Withdraw' || $title == 'Result') {
 <div class="section">
     <div>
 
-        <a href="user.php" class="<?php if ($title == 'User') { echo 'active'; } ?>">User</a>
+        <a href="{{ route('user.list') }}" class="{{ request()->routeIs('user.list') ? 'active' : '' }}">User</a>
 
-        <a href="deposit.php" class="<?php if ($title == 'Deposit') { echo 'active'; } ?>">Deposit</a>
+        <a href="{{ route('admin.deposit') }}" class="{{ request()->routeIs('admin.deposit') ? 'active' : '' }}">Deposit</a>
 
         <a href="withdraw.php" class="<?php if ($title == 'Withdraw') { echo 'active'; } ?>">Withdraw</a>
 

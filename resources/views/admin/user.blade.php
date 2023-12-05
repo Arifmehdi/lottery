@@ -1,4 +1,9 @@
+<h1 class="title">
+    <?php $title = 'User'?>
+</h1>
+
 @extends('admin.app')
+
 
 @section('admin_content')
 
