@@ -36,7 +36,7 @@
                     <a href="{{route('home')}}" style="background-color:#020d6a">Bulk Coupons [ B ]</a>
                     <a href="{{route('home')}}" style="background-color:#020d6a">Jodi Coupons [ AB ]</a>
                     <a href="{{route('user.deposit')}}" style="background-color:#020d6a">Deposit Room</a>
-                    <a href="UserRoom/WithDraw.php" style="background-color:#020d6a">WithDraw Room</a>
+                    <a href="{{ route('user.withdraw') }}" style="background-color:#020d6a">WithDraw Room</a>
                     @endif
                 </div>
             </div>

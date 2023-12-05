@@ -611,6 +611,18 @@ class HomeController extends Controller
         $deposits = Deposit::where('user_id',Auth::id())->get();
         return view('UserRoom.deposite_history', compact('deposits'));
     }
+    public function userWithdraw(Request $request)
+    {
+        return view('UserRoom.withdraw');
+    }
+
+    // public function userDepositHistory(Request $request)
+    // {
+    //     // $select = "SELECT * FROM deposit WHERE user_id = '$user_id' && date = '$date' ORDER BY id DESC";
+    //     // $query = mysqli_query($conn, $select);
+    //     $deposits = Deposit::where('user_id',Auth::id())->get();
+    //     return view('UserRoom.deposite_history', compact('deposits'));
+    // }
 
     public function createDeposit(Request $request)
     {
@@ -621,9 +633,6 @@ class HomeController extends Controller
         $date = date('d-m-Y');
 
         if ($amount >= 100) {
-
-            // $insert = "INSERT INTO deposit (user_id, amount, payment_id, payment_method, date) VALUES ('$id', '$amount', '$payment_id', '$payment_method', '$date')";
-            // $query = mysqli_query($conn, $insert);
 
             $deposit = new Deposit();
             $deposit->user_id = $id;
@@ -639,48 +648,73 @@ class HomeController extends Controller
             }else{
                 return response()->json(['action' => 'fail', 'message' => 'Deposit Failed!']);
             }
-// dd($deposit);
-            // if ($query) {
-            //     $_SESSION['success'] = 'Deposit successful!';
-            //     header('location:Deposit.php');
-            // } else {
-            //     $_SESSION['error'] = 'Deposit Failed!';
-            //     header('location:Deposit.php');
-            // }
+
         } else {
             return response()->json(['action' => 'greate', 'message' => 'Amount must be greater then 100!']);
-            // $_SESSION['error'] = 'Amount must be greater then 100!';
-            // header('location:Deposit.php');
+
         }
 
+    }
 
-        dd($id, $amount,$payment_id,$payment_method,$date,$request->all());
 
-        if ($request->ajax()) {
-            if (isset($_REQUEST['deposit'])) {
-                $id = $_REQUEST['user_id'];
-                $amount = $_REQUEST['amount'];
-                $payment_id = $_REQUEST['payment_id'];
-                $payment_method = $_REQUEST['payment_method'];
-                $date = date('d-m-Y');
+    public function createWithdraw(Request $request)
+    {
+        $id = $request->user_id;
+        $amount =  $request->amount;
+        $wallet = $request->wallet;
+        $payment_method =$request->payment_method;
+        $date = date('d-m-Y');
 
-                if ($amount >= 100) {
+        if ($amount >= 1000) {
 
-                    $insert = "INSERT INTO deposit (user_id, amount, payment_id, payment_method, date) VALUES ('$id', '$amount', '$payment_id', '$payment_method', '$date')";
-                    $query = mysqli_query($conn, $insert);
+            // $select = "SELECT * FROM user WHERE id = '$id'";
+            // $query = mysqli_query($conn, $select);
+            // $row = mysqli_fetch_array($query);
+            // $balance = $row['balance'];
 
-                    if ($query) {
-                        $_SESSION['success'] = 'Deposit successful!';
-                        header('location:Deposit.php');
-                    } else {
-                        $_SESSION['error'] = 'Deposit Failed!';
-                        header('location:Deposit.php');
-                    }
-                } else {
-                    $_SESSION['error'] = 'Amount must be greater then 100!';
-                    header('location:Deposit.php');
+            $balance =  User::find($id)->balance;
+            if ($balance >= $amount) {
+
+                $balance = $balance - $amount;
+
+                // $update = "UPDATE user SET balance = '$balance' WHERE id = '$id'";
+                // $query1 = mysqli_query($conn, $update);
+
+                $user = User::find($id);
+
+                if ($user) {
+                    $user->balance = $balance;
+                    $user->save();
+                    // Rest of your code
                 }
+
+                // $insert = "INSERT INTO withdraw (user_id, amount, wallet, payment_method, date) VALUES ('$id', '$amount', '$wallet', '$payment_method', '$date')";
+                // $query2 = mysqli_query($conn, $insert);
+
+                $withdraw = new Withdraw;
+                $withdraw->user_id = $id;
+                $withdraw->amount = $amount;
+                $withdraw->wallet = $wallet;
+                $withdraw->payment_method = $payment_method;
+                $withdraw->date = $date;
+                $withdraw->status = 0;
+                $withdraw->save();
+
+                if ($withdraw) {
+                    return response()->json(['action' => 'add', 'message' => 'Withdraw successful!']);
+                }else{
+                    return response()->json(['action' => 'fail', 'message' => 'Withdraw Failed!']);
+                }
+
+            } else {
+                return response()->json(['action' => 'greate', 'message' => 'Amount must be greater then 1000!']);
+
             }
+
+
+
+
+
         }
     }
 }
