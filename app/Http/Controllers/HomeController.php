@@ -10,6 +10,7 @@ use App\Models\Withdraw;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -411,5 +412,190 @@ class HomeController extends Controller
         $user = User::where('id',Auth::id())->first();
         // dd($deposits);
         return view('buyTicket', compact('user','row','row1','row2','row3','qty','points'));
+    }
+
+    public function report()
+    {
+
+
+//         ?php
+
+
+// function printTimeInterval($date) {
+    // echo "<pre>";
+    // print_r($row1);
+
+    $Loginid =Auth::id();
+    $sCondition = "";
+    // if($Loginid != 14){
+    //     $sCondition = " AND user_id = '".$Loginid."' ";
+    // }
+    // date_default_timezone_set('Asia/Kolkata');
+    // session_start();
+    // $conn = mysqli_connect('localhost', 'u687870158_Navratna', 'Vansh@1988', 'u687870158_Navratna');
+    // if (!$conn) {
+    //     echo 'Database connection failed!';
+
+    // }
+    $date = date("d-m-Y");
+     $DtODAY = $date;//  date("d-m-Y");;
+    $start_time = strtotime('8:30 AM');
+    $end_time = strtotime('9:00 PM');
+    $interval = 15 * 60; // 16 minutes in seconds
+	#$aGroup =["YANTRA-NV","YANTRA-RR","YANTRA-RY","YANTRA-CH"];
+    $sHtml = "<div class='container'><table class='table' id='yantra-table'>";
+    $sHtml .= "<tr>
+    <th>Draw Time</th>
+    <th >Coupon Name</th>
+    <th>00-09</th>
+    <th>10-19</th>
+    <th>20-29</th>
+    <th>30-39</th>
+    <th>40-49</th>
+    <th>50-59</th>
+    <th>60-69</th>
+    <th>70-79</th>
+    <th>80-89</th>
+    <th>90-99</th>
+    <th>Qty</th>
+    <th>Amount</th>
+    <th>WIN</th>
+    </tr>";
+    $Tempdate = date('H:i',strtotime('8:15 AM'));//  "08:15";
+    $TOtalQt = 0;
+    $TotalPoint=0;
+    for ($time = $start_time; $time <= $end_time; $time += $interval) {
+        $date =  date('h:i A', $time);
+        $date1 =  date('H:i', strtotime($date));
+
+        //echo $date." -- ".$Tempdate." <=>".$date1."<br>";
+
+
+
+        // $sHtml .= "<tr>";
+        // $sHtml .= "<td > ". $date."</td>";
+        // $sHtml .= "</tr>";
+        // $select = "
+        //     SELECT
+        //       CONCAT('YANTRA-',product_group)AS product_group,
+        //       product_group AS product_group1,
+        //       SUM(t0) AS 't0',
+        //       SUM(t1) AS 't1',
+        //       SUM(t2) AS 't2',
+        //       SUM(t3) AS 't3',
+        //       SUM(t4) AS 't4',
+        //       SUM(t5) AS 't5',
+        //       SUM(t6) AS 't6',
+        //       SUM(t7) AS 't7',
+        //       SUM(t8) AS 't8',
+        //       SUM(t9) AS 't9',
+        //       SUM(qty) AS 'qty',
+        //       SUM(points) AS 'points'
+        //     FROM
+        //       `playroom`
+        //     WHERE DATE = '$DtODAY'
+        //       AND `product_group` IN ('NV','RR','RY','CH')
+        //        AND playroom.time BETWEEN '$Tempdate'
+        //       AND '$date1'
+        //       ".$sCondition."
+        //       GROUP BY product_group
+        //       order by (case product_group when 'NV' then '1' when 'RR' then '2' when 'RY' then '3' when 'CH' then '4' END )
+        //     " ;
+
+        //     $select1 = "SELECT * FROM yantra WHERE time ='$date1' and date = '$DtODAY' ORDER BY id DESC";
+        //     $query1 = mysqli_query($conn, $select1);
+        //     $row1 = mysqli_fetch_array($query1);
+        //     $query = mysqli_query($conn, $select);
+        $select = DB::table('playroom')
+        ->select(
+            DB::raw("CONCAT('YANTRA-', product_group) AS product_group"),
+            'product_group AS product_group1',
+            DB::raw('SUM(t0) AS t0'),
+            DB::raw('SUM(t1) AS t1'),
+            DB::raw('SUM(t2) AS t2'),
+            DB::raw('SUM(t3) AS t3'),
+            DB::raw('SUM(t4) AS t4'),
+            DB::raw('SUM(t5) AS t5'),
+            DB::raw('SUM(t6) AS t6'),
+            DB::raw('SUM(t7) AS t7'),
+            DB::raw('SUM(t8) AS t8'),
+            DB::raw('SUM(t9) AS t9'),
+            DB::raw('SUM(qty) AS qty'),
+            DB::raw('SUM(points) AS points')
+        )
+        ->where('DATE', '=', $DtODAY)
+        ->whereIn('product_group', ['NV', 'RR', 'RY', 'CH'])
+        ->whereBetween('playroom.time', [$Tempdate, $date1])
+        ->whereRaw($sCondition)
+        ->groupBy('product_group')
+        ->orderByRaw("CASE product_group WHEN 'NV' THEN '1' WHEN 'RR' THEN '2' WHEN 'RY' THEN '3' WHEN 'CH' THEN '4' END")
+        ->get();
+
+    // Eloquent query for $select1
+    $select1 = DB::table('yantra')
+        ->where('time', '=', $date1)
+        ->where('date', '=', $DtODAY)
+        ->orderBy('id', 'DESC')
+        ->get();
+
+            dd($date,$DtODAY,$start_time,$end_time,$interval,$sHtml, $Tempdate, $TOtalQt,$TotalPoint, $date, $date1, $select1);
+            if($query->num_rows > 0){
+                while ( $row = mysqli_fetch_array($query) ) {
+
+                    $sHtml .= "<tr>";
+                     $sHtml .= "<td > ". $date."</td>";
+                    $sHtml .= "<td >".$row["product_group"]."</td>";
+                    $sHtml .= "<td >".$row["t0"]."</td>";
+                    $sHtml .= "<td >".$row["t1"]."</td>";
+                    $sHtml .= "<td >".$row["t2"]."</td>";
+                    $sHtml .= "<td >".$row["t3"]."</td>";
+                    $sHtml .= "<td >".$row["t4"]."</td>";
+                    $sHtml .= "<td >".$row["t5"]."</td>";
+                    $sHtml .= "<td >".$row["t6"]."</td>";
+                    $sHtml .= "<td >".$row["t7"]."</td>";
+                    $sHtml .= "<td >".$row["t8"]."</td>";
+                    $sHtml .= "<td >".$row["t9"]."</td>";
+
+                    $sHtml .= "<td >".$row["qty"]."</td>";
+                    $sHtml .= "<td >".$row["points"]."</td>";
+                    $sHtml .= "<td >".$row1[$row["product_group1"]]."</td>";
+
+
+                    $sHtml .= "</tr>";
+
+                     $TOtalQt += $row["qty"];
+                    $TotalPoint += $row["points"];
+
+                }
+            }
+            // else{
+            //     $sHtml .= "<tr><td >-</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td></tr>";
+            //     $sHtml .= "<tr><td >-</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td></tr>";
+            //     $sHtml .= "<tr><td >-</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td></tr>";
+            //     $sHtml .= "<tr><td >-</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td><td >0</td></tr>";
+            // }
+
+
+
+
+
+         $Tempdate =  $date1;
+
+    }
+    $sHtml .= "</tr><th align='right' colspan='12'>Total</th><th>".$TOtalQt."</th><th>".$TotalPoint."</th></tr>";
+    $sHtml .= "</table></div>";
+    echo $sHtml;
+
+
+// Call the function to print the time intervals
+//  printTimeInterval($date);
+//echo "<pre>";/
+//print_r($x);
+
+
+
+
+
+        return view('report');
     }
 }

@@ -177,7 +177,7 @@
             <a onclick="clearAll()" class="glossy" style="background-color:#B80007">CLEAR</a>
             <button type="submit" class="glossy" name="cancel_ticket" style="background-color:#B80007">CANCEL</button>
             <a href="report.php" class="glossy" style="background-color:#B80007">HISTORY</a>
-            <a href="BuyTicket.php" class="glossy" style="background-color:#B80007">REPORT</a>
+            <a href="{{ route('admin.buyTicket') }}" class="glossy" style="background-color:#B80007">REPORT</a>
             <a href="{{route('result')}}" class="glossy" style="background-color:#B80007">RESULT</a>
 
         </div>
