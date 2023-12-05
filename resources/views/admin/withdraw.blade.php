@@ -1,9 +1,9 @@
 <h1 class="title">
-    <?php $title = 'Deposit'; ?>
+    <?php $title = 'Withdraw'; ?>
 </h1>
 @extends('admin.app')
 
-@section('title', 'Deposit')
+@section('title', 'Withdraw')
 
 @section('admin_content')
 
@@ -12,29 +12,28 @@
         <tr>
             <th>No.</th>
             <th>Username</th>
-            <th>Payment</th>
-            <th>Payment ID</th>
             <th>Amount</th>
-            <th>Balance</th>
+            <th>Wallet</th>
+            <th>Payment Method</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($deposits as $key => $deposit)
+        @foreach ($Withdraws as $key => $withdraw)
         <tr>
             <td>{{ ++$key }}</td>
             <td>{{ $user->username }}</td>
-            <td>{{ $deposit->payment_method }}</td>
-            <td>{{ $deposit->payment_id }}</td>
-            <td>{{ $deposit->amount }}</td>
+            <td>{{ $withdraw->amount }}</td>
+            <td>{{ $withdraw->wallet }}</td>
+            <td>{{ $withdraw->payment_method }}</td>
             <td>{{ $user->balance }}</td>
-            <td>{{ $deposit->date }}</td>
+            <td>{{ $withdraw->date }}</td>
             <td>
                 <div class="action-btn-div">
-                    <a href="function.php?confirmdeposit={{ $deposit->id }}&userid={{ $deposit->user_id }}&amount={{ $deposit->amount }}&balance={{ $user->balance }}" class="action-btn">Confirm</a>
+                    <a href="function.php?confirmdeposit={{ $withdraw->id }}&userid={{ $withdraw->user_id }}&amount={{ $withdraw->amount }}&balance={{ $user->balance }}" class="action-btn">Confirm</a>
 
-                    <a class="action-btn" onclick="deleteDeposit({{ $deposit->id }})">Delete</a>
+                    <a class="action-btn" onclick="deleteDeposit({{ $withdraw->id }})">Delete</a>
                 </div>
             </td>
         </tr>
@@ -53,16 +52,15 @@
         <tr>
             <td><?php //echo $i; ?></td>
             <td><?php //echo $row1['username']; ?></td>
-            <td><?php //echo $row['payment_method']; ?></td>
-            <td><?php //echo $row['payment_id']; ?></td>
             <td><?php //echo $row['amount']; ?></td>
-            <td><?php //echo $row1['balance']; ?></td>
+            <td><?php //echo $row['wallet']; ?></td>
+            <td><?php //echo $row['payment_method']; ?></td>
             <td><?php //echo $row['date']; ?></td>
             <td>
                 <div class="action-btn-div">
-                    <a href="function.php?confirmdeposit=<?php //echo $row['id']; ?>&userid=<?php //echo $row['user_id']; ?>&amount=<?php //echo $row['amount']; ?>&balance=<?php //echo $row1['balance']; ?>" class="action-btn">Confirm</a>
+                    <a href="function.php?confirmwithdraw=<?php //echo $row['id']; ?>" class="action-btn">Confirm</a>
 
-                    <a class="action-btn" onclick="deleteDeposit(<?php //echo $row['id']; ?>)">Delete</a>
+                    <a class="action-btn" onclick="deleteWithdraw(<?php //echo $row['id']; ?>)">Delete</a>
                 </div>
             </td>
         </tr>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Yantra;
 use App\Models\Deposit;
+use App\Models\Playroom;
+use App\Models\Withdraw;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -175,6 +177,113 @@ class HomeController extends Controller
         return view('admin.user');
     }
 
+    public function functional(Request $request)
+    {
+        if ($request->action == 'buy_ticket') {
+            $user_id = Auth::id();
+            $date = date('d-m-Y');
+            $time = date('H:i');
+
+            $productGroups = array('NV', 'RR', 'RY', 'CH');
+            $totalQty = array(0, 0, 0, 0);
+            $totalPoints = array(0, 0, 0, 0);
+            $tvalues = $request->tValues;
+
+            foreach( $tvalues as $i => $t)
+            {
+                if ($t !== null )
+                {
+                    $rowNumber = floor($i / 10);
+                    $totalQty[$rowNumber] += intval($t);
+                    $totalPoints[$rowNumber] += intval($t) * 11;
+                }
+
+            }
+            // for ($i = 0; $i < 40; $i++) {
+                //     // $t = $_REQUEST['t' . $i];
+                //     $t = $tvalues;
+                //     $rowNumber = floor($i / 10);
+                //     $totalQty[$rowNumber] += intval($t);
+                //     $totalPoints[$rowNumber] += intval($t) * 11;
+                // }
+                // $balance = mysqli_fetch_array(mysqli_query($conn, "SELECT balance FROM user WHERE id = '$user_id'"))['balance'];
+
+
+                $balance = User::where('id',$user_id)->first()->balance;
+
+                $total_points = array_sum($totalPoints);
+
+                // dd($balance ,$totalPoints,$totalQty,$tvalues, $total_points);
+                // dd($request->action,$date,$time,$productGroups,$totalQty,$totalPoints);
+            // if ($balance >= $total_points) {
+            //     for ($j = 0; $j < 4; $j++) {
+            //         $product_group = $productGroups[$j];
+            //         $qty = $totalQty[$j];
+            //         $points = $totalPoints[$j];
+
+            //         $insert = "INSERT INTO playroom (user_id, product_group, t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, qty, points, date, time) VALUES ('$user_id', '$product_group'";
+
+            //         for ($k = 0; $k < 10; $k++) {
+            //             $t = $_REQUEST['t' . ($j * 10 + $k)];
+            //             $insert .= ", '$t'";
+            //         }
+
+            //         $insert .= ", '$qty', '$points', '$date', '$time')";
+            //         mysqli_query($conn, $insert);
+            //     }
+
+            //     $balance = $balance - $total_points;
+            //     mysqli_query($conn, "UPDATE user SET balance = '$balance' WHERE id = '$user_id'");
+
+            //     header('location:BuyTicket.php');
+            //     $_SESSION['result'] = 'True';
+            // } else {
+            //     header('location:playroom.php?error=Your balance is low.');
+            // }
+
+
+            if ($balance >= $total_points) {
+                for ($j = 0; $j < 4; $j++) {
+                    $product_group = $productGroups[$j];
+                    $qty = $totalQty[$j];
+                    $points = $totalPoints[$j];
+
+                    $insertData = [
+                        'user_id' => $user_id,
+                        'product_group' => $product_group,
+                        'qty' => $qty,
+                        'points' => $points,
+                        'date' => $date,
+                        'time' => $time,
+                    ];
+
+                    for ($k = 0; $k < 10; $k++) {
+                        // $t = request()->input('t' . ($j * 10 + $k));
+                        $t = $tvalues[($j * 10 + $k)];
+                        // dd($t);
+                        $insertData['t' . $k] = $t;
+                    }
+
+                    Playroom::create($insertData);
+                }
+
+                $balance = $balance - $total_points;
+
+                $user_balance = User::where('id', $user_id)->update(['balance' => $balance]);
+                // return redirect()->route('admin.buyTicket')->with('result', 'True');
+                $response = [
+                    'redirect' => route('admin.buyTicket'),
+                    'result' => 'True',
+                ];
+
+                return response()->json($response);
+            } else {
+                return redirect()->route('playroom')->with('error', 'Your balance is low.');
+            }
+        }
+        dd('ok rek');
+    }
+
     public function adminDeposit(Request $request)
     {
         // if (isset($_GET['date'])) {
@@ -199,8 +308,108 @@ class HomeController extends Controller
         return view('admin.deposit', compact('user','deposits'));
     }
 
-    public function adminWithdraw()
+    public function adminWithdraw(Request $request)
     {
-        return 'ok';
+        $date = date('d-m-Y');
+
+        if ($request->ajax()) {
+            $date = $_GET['date'];
+        }
+        $Withdraws = Withdraw::where('date',$date)->where('status',0)->get();
+
+        $user = User::where('id',Auth::id())->first();
+        // dd($deposits);
+        return view('admin.withdraw', compact('user','Withdraws'));
+    }
+
+    public function adminResult(Request $request)
+    {
+        $date = date('d-m-Y');
+
+        if ($request->ajax()) {
+            $date = $_GET['date'];
+        }
+        $yantras = Yantra::where('date',$date)->get();
+
+        $user = User::where('id',Auth::id())->first();
+        // dd($deposits);
+        return view('admin.result', compact('user','yantras'));
+    }
+
+    public function adminBuyTicket(Request $request)
+    {
+
+        // $user_id = $_SESSION['id'];
+
+        // $select = "SELECT * FROM playroom WHERE user_id = '$user_id' && product_group = 'NV' ORDER BY id DESC";
+        // $query = mysqli_query($conn, $select);
+        // $row = mysqli_fetch_array($query);
+
+        // $select1 = "SELECT * FROM playroom WHERE user_id = '$user_id' && product_group = 'RR' ORDER BY id DESC";
+        // $query1 = mysqli_query($conn, $select1);
+        // $row1 = mysqli_fetch_array($query1);
+
+        // $select2 = "SELECT * FROM playroom WHERE user_id = '$user_id' && product_group = 'RY' ORDER BY id DESC";
+        // $query2 = mysqli_query($conn, $select2);
+        // $row2 = mysqli_fetch_array($query2);
+
+        // $select3 = "SELECT * FROM playroom WHERE user_id = '$user_id' && product_group = 'CH' ORDER BY id DESC";
+        // $query3 = mysqli_query($conn, $select3);
+        // $row3 = mysqli_fetch_array($query3);
+
+        // $qty = $row['qty'] + $row1['qty'] + $row2['qty'] + $row3['qty'];
+        // $points = $row['points'] + $row1['points'] + $row2['points'] + $row3['points'];
+
+        $user_id = Auth::id();
+
+        // $row = Playroom::where('user_id', $user_id)->where('product_group', 'NV')->orderBy('id', 'DESC')->get();
+
+        // $row1 = Playroom::where('user_id', $user_id)->where('product_group', 'RR')->orderBy('id', 'DESC')->get();
+
+        // $row2 = Playroom::where('user_id', $user_id)->where('product_group', 'RY')->orderBy('id', 'DESC')->get();
+
+        // $row3 = Playroom::where('user_id', $user_id)->where('product_group', 'CH')->orderBy('id', 'DESC')->get();
+
+        // $qty = $row->qty + $row1->qty + $row2->qty + $row3->qty;
+        // $points = $row->points + $row1->points + $row2->points + $row3->points;
+
+
+        $row = Playroom::where('user_id', $user_id)
+        ->where('product_group', 'NV')
+        ->orderByDesc('id')
+        ->first();
+
+        $row1 = Playroom::where('user_id', $user_id)
+        ->where('product_group', 'RR')
+        ->orderByDesc('id')
+        ->first();
+
+        $row2 = Playroom::where('user_id', $user_id)
+        ->where('product_group', 'RY')
+        ->orderByDesc('id')
+        ->first();
+
+        $row3 = Playroom::where('user_id', $user_id)
+        ->where('product_group', 'CH')
+        ->orderByDesc('id')
+        ->first();
+
+        $qty = ($row ? $row->qty : 0) + ($row1 ? $row1->qty : 0) + ($row2 ? $row2->qty : 0) + ($row3 ? $row3->qty : 0);
+        $points = ($row ? $row->points : 0) + ($row1 ? $row1->points : 0) + ($row2 ? $row2->points : 0) + ($row3 ? $row3->points : 0);
+
+
+
+
+        $date = date('d-m-Y');
+
+        if ($request->ajax()) {
+            // $date = $_GET['date'];
+            $date = date('d-m-Y');
+        }
+        $yantras = Yantra::where('date',$date)->get();
+
+        $user = User::where('id',Auth::id())->first();
+        // dd($deposits);
+        return view('buyTicket', compact('user','row','row1','row2','row3','qty','points'));
     }
 }

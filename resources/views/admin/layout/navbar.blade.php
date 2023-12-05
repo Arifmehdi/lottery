@@ -14,6 +14,8 @@ if (isset($_GET['date'])) {
 // $query10 = mysqli_query($conn, $select10);
 // $row10 = mysqli_fetch_array($query10);
 // $status10 = $row10['status'];
+$row10 = new App\Models\ResultStatus;
+$status10 = $row10->status;
 
 if ($title == 'Deposit' || $title == 'Withdraw' || $title == 'Result') {
 
@@ -30,9 +32,9 @@ if ($title == 'Deposit' || $title == 'Withdraw' || $title == 'Result') {
 
         <a href="{{ route('admin.deposit') }}" class="{{ request()->routeIs('admin.deposit') ? 'active' : '' }}">Deposit</a>
 
-        <a href="withdraw.php" class="<?php if ($title == 'Withdraw') { echo 'active'; } ?>">Withdraw</a>
+        <a href="{{ route('admin.withdraw') }}" class="{{ request()->routeIs('admin.withdraw') ? 'active' : '' }}">Withdraw</a>
 
-        <a href="result.php" class="<?php if ($title == 'Result') { echo 'active'; } ?>">Result</a>
+        <a href="{{ route('admin.result') }}" class="{{ request()->routeIs('admin.result') ? 'active' : '' }}">Result</a>
 
 
         <?php if ($title == 'Result') { ?>
@@ -45,9 +47,9 @@ if ($title == 'Deposit' || $title == 'Withdraw' || $title == 'Result') {
         <?php } ?>
 
     </div>
-    <div>
+    {{-- <div>
         <a href="../logout.php">Logout</a>
-    </div>
+    </div> --}}
 </div>
 
 <?php

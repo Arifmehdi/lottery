@@ -2,12 +2,14 @@
 
 use App\Models\User;
 use App\Models\Yantra;
+use App\Models\Deposit;
 use App\Models\OldUser;
 use App\Models\Playroom;
+use App\Models\Withdraw;
 use App\Models\OldYantra;
-use App\Models\OldPlayroom;
 use App\Models\OldDeposit;
-use App\Models\Deposit;
+use App\Models\OldPlayroom;
+use App\Models\OldWithdraw;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
@@ -99,6 +101,21 @@ Route::get('/deposit-table', function () {
     return 'Done Deposit Table';
 });
 
+Route::get('/withdraw-table', function () {
+    $data = OldWithdraw::get();
+    foreach ($data as $d){
+        $newData = new Withdraw();
+        $newData->user_id = $d->user_id;
+        $newData->amount = $d->amount;
+        $newData->wallet = $d->wallet;
+        $newData->payment_method = $d->payment_method;
+        $newData->date = $d->date;
+        $newData->status = $d->status;
+        $newData->save();
+    }
+    return 'Done Withdraw Table';
+});
+
 
 Route::get('/cron-playroom',[CronController::class,'index'])->name('cron.playroom');
 
@@ -114,9 +131,13 @@ Auth::routes();
     Route::get('/result',[HomeController::class,'result'])->name('result');
     Route::get('/deposite',[HomeController::class,'deposite'])->name('deposite');
     Route::post('/ajax-captcha',[HomeController::class,'ajaxCaptcha'])->name('ajax.captcha');
+    Route::get('/function',[HomeController::class,'functional'])->name('functional');
+
     Route::get('/admin/user',[HomeController::class,'user'])->name('user.list');
     Route::get('/admin/deposit',[HomeController::class,'adminDeposit'])->name('admin.deposit');
     Route::get('/admin/withdraw',[HomeController::class,'adminWithdraw'])->name('admin.withdraw');
+    Route::get('/admin/result',[HomeController::class,'adminResult'])->name('admin.result');
+    Route::get('/BuyTicket',[HomeController::class,'adminBuyTicket'])->name('admin.buyTicket');
 
 // });
 

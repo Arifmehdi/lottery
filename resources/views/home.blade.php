@@ -26,10 +26,10 @@
                 <div>
                     @if(Auth::user()->role == 1)
                     <a href="{{route('home')}}" style="background-color:#020d6a">PlayRoom</a>
-                    <a href="NavRatnaCouPon/deposit.php" style="background-color:#020d6a">Deposit</a>
-                    <a href="NavRatnaCouPon/WithDraw.php" style="background-color:#020d6a">Withdraw</a>
+                    <a href="{{ route('admin.deposit') }}" style="background-color:#020d6a">Deposit</a>
+                    <a href="{{ route('admin.withdraw') }}" style="background-color:#020d6a">Withdraw</a>
                     <a href="{{route('user.list')}}" style="background-color:#020d6a">User</a>
-                    <a href="NavRatnaCouPon/result.php" style="background-color:#020d6a">Result</a>
+                    <a href="{{ route('admin.result') }}" style="background-color:#020d6a">Result</a>
                     <a href="report.php">Report</a>
                     @else
                     <a href="{{route('home')}}" style="background-color:#020d6a">Bulk Coupons [ A ]</a>
@@ -173,7 +173,7 @@
         <div class="button">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <a onclick="clearAll()" class="glossy" style="background-color:#005D02">ADVANCE</a>
-            <button type="submit" class="glossy" style="background-color:#005D02" name="buy_ticket">BUY</button>
+            <button type="submit" class="glossy" style="background-color:#005D02" name="buy_ticket" id="buy_ticket">BUY</button>
             <a onclick="clearAll()" class="glossy" style="background-color:#B80007">CLEAR</a>
             <button type="submit" class="glossy" name="cancel_ticket" style="background-color:#B80007">CANCEL</button>
             <a href="report.php" class="glossy" style="background-color:#B80007">HISTORY</a>
@@ -229,7 +229,39 @@ $(document).ready(function(){
         // document.getElementById('logout-form').submit();
         // alert('ajsgdasdjashdj')
     })
+
+    $('#buy_ticket').click(function(e){
+        e.preventDefault();
+        action = 'buy_ticket';
+        var tValues = [];
+
+        for (var i = 0; i < 40; i++) {
+            var inputValue = $('#t' + i).val();
+            // alert(inputValue)
+            // Push the value to the array
+            tValues.push(inputValue);
+        }
+        console.log(tValues);
+        $.ajax({
+            url: "{{ route('functional') }}",
+            type: 'GET',
+            data: {
+                action: action,
+                tValues: tValues,
+            },
+            success: function(response) {
+                window.location.href = response.redirect;
+            },
+            error: function(error) {
+                // console.error('Error fetching inventory data:', error);
+            }
+        });
+
+    })
+
+
 })
+
 </script>
 
 <div class="collapse navbar-collapse " id="navbarSupportedContent" style="display:none">
