@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Yantra;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class HomeController extends Controller
 {
@@ -79,16 +81,13 @@ class HomeController extends Controller
         ->first();
 
         $timeToDisplay = $row1 ? $row1->time : $formatted_timelast;
-                // dd($formatted_timelast);
 
         return view('home',compact('row1','timeToDisplay'));
     }
 
     public function result(Request $request)
     {
-
         // include_once 'includes/connection.php';
-
 
         // if (isset($_GET['date'])) {
         //     $date = $_GET['date'];
@@ -129,5 +128,48 @@ class HomeController extends Controller
         $randomString = $reservedLetter . Str::random($length - 1, str_shuffle($characters));
 
         return strtoupper($randomString);
+    }
+
+    public function user(Request $request)
+    {
+        $users = User::get();
+        if ($request->ajax()) {
+            // dd($users);
+            return DataTables::of($users)
+                ->addIndexColumn()
+                ->addColumn('DT_RowIndex', function ($user) {
+                    return $user->id; // Use any unique identifier for your rows
+                })
+                ->editColumn('username', function ($row) {
+                    return '<input type="text" name="username[]" placeholder="Username" value="'. $row->username .'">';
+                })
+                ->editColumn('phone', function ($row) {
+                    return '<input type="text" name="name[]" placeholder="" value="'. $row->phone .'">';
+                })
+                ->editColumn('password', function ($row) {
+                    return '<input type="password" name="password[]" placeholder="Password"> <input type="hidden" name="id[]" value="{{$user->id}}">';
+                })
+                ->editColumn('balance', function ($row) {
+                    return '<input type="text" name="balance[]" placeholder="Balance" value="'. $row->balance .'">';
+                })
+                ->editColumn('status', function ($row) {
+                    return ($row->status == 1) ? 'Verified' : 'Unverified' ;
+                })
+                ->addColumn('is_admin', function ($row) {
+                    return ($row->role == 1) ?  '<input type="checkbox" name="admin[]" checked>' :  '<input type="checkbox" name="admin[]">';
+                })
+
+                ->addColumn('action', function ($row) {
+                     $html ='<div class="action-btn-div">
+                    <button class="action-btn" name="updateuser">Update</button>
+                    <a class="action-btn" onclick="deleteUser({{$user->id}})">Delete</a>
+                </div>';
+                return $html;
+                })
+
+                ->rawColumns(['action', 'username', 'phone', 'password', 'balance', 'status','is_admin'])
+                ->make(true);
+        }
+        return view('admin.user');
     }
 }

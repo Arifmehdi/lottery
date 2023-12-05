@@ -20,6 +20,7 @@ class CheckRole
 
     public function handle($request, Closure $next, $role)
     {
+        // dd($role);
         if ($request->user() && $request->user()->role != $role) {
             abort(403, 'Unauthorized action.');
         }

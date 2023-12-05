@@ -25,10 +25,10 @@
                 </h4>
                 <div>
                     @if(Auth::user()->role == 1)
-                    <a href="playroom.php" style="background-color:#020d6a">PlayRoom</a>
+                    <a href="{{route('home')}}" style="background-color:#020d6a">PlayRoom</a>
                     <a href="NavRatnaCouPon/deposit.php" style="background-color:#020d6a">Deposit</a>
                     <a href="NavRatnaCouPon/WithDraw.php" style="background-color:#020d6a">Withdraw</a>
-                    <a href="NavRatnaCouPon/user.php" style="background-color:#020d6a">User</a>
+                    <a href="{{route('user.list')}}" style="background-color:#020d6a">User</a>
                     <a href="NavRatnaCouPon/result.php" style="background-color:#020d6a">Result</a>
                     <a href="report.php">Report</a>
                     @else

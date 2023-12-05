@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Yantra extends Model
 {
     use HasFactory;
-    // protected $table = 'yantras';
+    protected $table = 'yantras';
+    // protected $table = 'yantra';
 
 }
